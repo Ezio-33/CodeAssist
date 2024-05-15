@@ -14,7 +14,7 @@ Ce script permet de configurer automatiquement l'environnement nécessaire pour 
 - Télécharge le script `git_auto` depuis le dépôt GitHub spécifié.
 - Attribue les droits d'exécution au script téléchargé.
 - Ajoute le dossier des scripts au PATH pour un accès facile.
-- Supprime lui-même après l'exécution pour ne pas laisser de trace.
+- Se supprime lui-même après l'exécution.
 
 ### Git_Auto
 
@@ -41,10 +41,9 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
    ```
 4. **Rendez le script exécutable**:
    Une fois dans le dossier ou vous avez télécharger le Script d'installation
-   ````bash
+   ```bash
    chmod +x Install_Script
-   	```
-   ````
+   ```
 5. **Exécutez le script Install_Script**:
    ```bash
    ./Install_Script
@@ -55,9 +54,9 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 Après l'installation, vous pouvez utiliser git_auto pour gérer vos projets.
 Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez :
 
-    ```bash
+    ````
     git_auto
-    ```
+    ````
 
 ## Licence
 
