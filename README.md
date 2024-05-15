@@ -58,10 +58,6 @@ Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, pui
 git_auto
 ```
 
-## Licence
-
-Ce projet est sous licence libre. Vous pouvez le modifier et le distribuer selon les termes de la licence spécifiée.
-
 ## Contact
 
 Pour toute question ou support, veuillez ouvrir un issue dans le dépôt GitHub du projet.
