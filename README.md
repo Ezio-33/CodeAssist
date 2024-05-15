@@ -54,9 +54,9 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 Après l'installation, vous pouvez utiliser git_auto pour gérer vos projets.
 Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez :
 
-    ````
-    git_auto
-    ````
+```bash
+git_auto
+```
 
 ## Licence
 
