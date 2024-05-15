@@ -42,11 +42,11 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 4. **Rendez le script exécutable**:
    Une fois dans le dossier ou vous avez télécharger le Script d'installation
    ```bash
-   chmod +x Install_Script
+   chmod +x Install_Script.sh
    ```
 5. **Exécutez le script Install_Script**:
    ```bash
-   ./Install_Script
+   ./Install_Script.sh
    ```
 
 ## Utilisation
