@@ -3,14 +3,14 @@
 # Chemins des fichiers et dossiers
 script_dir="/root/Script_Prod"
 script_file="$script_dir/git_auto"
-github_url="https://github.com/Ezio-33/Script_Prod/blob/acb630e3e8475f2d34cf917de9c24ba7a18954fa/Script_git/git_auto"
+github_url="https://github.com/Ezio-33/Script_Prod/blob/main/Script_git/git_auto"
 
 # Création du dossier s'il n'existe pas déjà
 mkdir -p "$script_dir"
 
 # Téléchargement du script git_auto depuis GitHub
 curl_options="-fsSL" # Options de curl pour gérer les erreurs
-if curl $curl_options -o "$script_file" "$github_url"; then
+if curl $curl_options -o "$script_file" -z "$script_file" "$github_url"; then
 	echo ""
 	echo -e "\e[1;32mScript git_auto téléchargé avec succès.\e[0m"
 	echo ""
