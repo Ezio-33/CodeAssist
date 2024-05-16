@@ -9,8 +9,8 @@ github_url="https://github.com/Ezio-33/Script_Prod/blob/main/Script_git/git_auto
 mkdir -p "$script_dir"
 
 # Téléchargement du script git_auto depuis GitHub
-curl_options="-fsSL" # Options de curl pour gérer les erreurs
-if curl $curl_options -o "$script_file" -z "$script_file" "$github_url"; then
+curl_options="-fsSL" 
+if curl $curl_options -o "git_auto" -z "git_auto" "$github_url"; then
 	echo ""
 	echo -e "\e[1;32mScript git_auto téléchargé avec succès.\e[0m"
 	echo ""
