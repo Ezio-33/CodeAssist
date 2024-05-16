@@ -29,7 +29,8 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 
 ### Téléchargement et préparation
 
-1. **Ouvrez votre terminal** : Cela peut généralement être fait en cherchant "terminal" dans les applications de votre système.
+1. **Ouvrez votre terminal** :
+   Cela peut généralement être fait en cherchant "terminal" dans les applications de votre système.
 
 2. **Téléchargez le script Install_Script**:
    ```bash
@@ -40,9 +41,9 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
    ```bash
    chmod +x Install_Script.sh
    ```
-4. **Exécutez le script Install_Script**:
+4. **Exécutez le script Install_Script dans le shell actuel en utilisant la commande**:
    ```bash
-   ./Install_Script.sh
+   source ./Install_Script.sh
    ```
 
 ## Utilisation
