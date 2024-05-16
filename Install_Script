@@ -13,7 +13,6 @@ curl_options="-fsSL"
 if curl $curl_options -o "$script_file" -z "$script_file" "$github_url"; then
     echo ""
     echo -e "\e[1;32mScript git_auto téléchargé avec succès.\e[0m"
-    echo ""
 else
     echo ""
     echo -e "\e[1;31mErreur lors du téléchargement du script git_auto depuis GitHub.\e[0m"
@@ -46,6 +45,7 @@ rm -- "${BASH_SOURCE[0]}"
 
 # Vérification de la suppression du fichier
 if [ ! -f "${BASH_SOURCE[0]}" ]; then
+	echo ""
 	echo -e "\e[1;32mLe fichier a été supprimé avec succès.\e[0m"
 	echo ""
 else
