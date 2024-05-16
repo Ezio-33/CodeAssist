@@ -42,10 +42,10 @@ source ~/.bashrc
 fi
 
 # Auto-suppression du script
-rm -- "$0"
+rm -- "${BASH_SOURCE[0]}"
 
 # Vérification de la suppression du fichier
-if [ ! -f "$0" ]; then
+if [ ! -f "${BASH_SOURCE[0]}" ]; then
 	echo ""
 	echo -e "\e[1;32mLe fichier a été supprimé avec succès.\e[0m"
 	echo ""
