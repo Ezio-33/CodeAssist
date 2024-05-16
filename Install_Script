@@ -37,7 +37,6 @@ if ! command -v git_auto >/dev/null; then
         sed -i '/^#    \. \/etc\/bash_completion/s/^#//' ~/.bashrc
         sed -i '/^#fi/s/^#//' ~/.bashrc
     fi
-fi
 	# Rechargement du fichier .bashrc pour appliquer les modifications
 	source ~/.bashrc
 fi
