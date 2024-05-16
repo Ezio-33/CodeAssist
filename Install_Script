@@ -39,6 +39,7 @@ if ! command -v git_auto >/dev/null; then
     fi
 # Rechargement du fichier .bashrc pour appliquer les modifications
 source ~/.bashrc
+echo ""
 fi
 
 # Auto-suppression du script
