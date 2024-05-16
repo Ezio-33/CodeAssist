@@ -46,11 +46,9 @@ rm -- "${BASH_SOURCE[0]}"
 
 # Vérification de la suppression du fichier
 if [ ! -f "${BASH_SOURCE[0]}" ]; then
-	echo ""
 	echo -e "\e[1;32mLe fichier a été supprimé avec succès.\e[0m"
 	echo ""
 else
-	echo ""
 	echo -e "\e[1;31mErreur lors de la suppression du fichier.\e[0m"
 	echo ""
 	exit 1
