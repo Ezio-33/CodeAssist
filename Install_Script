@@ -48,3 +48,4 @@ rm -- "$0"
 
 # Affichage du message en vert et en gras
 echo -e "\e[1;32mInstallation et configuration terminées.\e[0m"
+echo
