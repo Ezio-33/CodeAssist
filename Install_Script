@@ -36,9 +36,6 @@ if [ -f ~/.bashrc ]; then
     sed -i 's/#if \[ -f \/etc\/bash_completion \] && ! shopt -oq posix; then/if [ -f \/etc\/bash_completion ] && ! shopt -oq posix; then/' ~/.bashrc
     sed -i 's/#    . \/etc\/bash_completion/    . \/etc\/bash_completion/' ~/.bashrc
     sed -i 's/#fi/fi/' ~/.bashrc
-else
-    echo "Le fichier .bashrc n'existe pas."
-fi
 	# Rechargement du fichier .bashrc pour appliquer les modifications
 	source ~/.bashrc
 fi
