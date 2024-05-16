@@ -27,7 +27,9 @@ chmod u+x "$script_file"
 # Vérification si le script est déjà dans le PATH
 if ! command -v git_auto >/dev/null; then
 	# Ajout du dossier au PATH de manière permanente
-	echo "export PATH=\$PATH:$script_dir" >> ~/.bashrc
+	if ! grep -q "export PATH=\$PATH:$script_dir" ~/.bashrc; then
+		echo "export PATH=\$PATH:$script_dir" >> ~/.bashrc
+	fi
 	# Vérifie si le fichier .bashrc existe
 if [ -f ~/.bashrc ]; then
     # Utilise sed pour décommenter les lignes
