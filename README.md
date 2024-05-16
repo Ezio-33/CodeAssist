@@ -2,7 +2,7 @@
 
 ## Description
 
-Ce dépôt contient des scripts automatisés pour faciliter la gestion et la mise à jour de projets sur GitHub. Les scripts sont sécurisés et chiffrés pour protéger leur contenu.
+Ce dépôt contient des scripts automatisés pour faciliter la gestion et la mise à jour de projets sur GitHub.
 
 ## Scripts
 
