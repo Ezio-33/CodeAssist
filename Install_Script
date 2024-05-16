@@ -16,7 +16,6 @@ if curl $curl_options -o "$script_file" -z "$script_file" "$github_url"; then
 else
     echo ""
     echo -e "\e[1;31mErreur lors du téléchargement du script git_auto depuis GitHub.\e[0m"
-    echo ""
     exit 1
 fi
 
@@ -45,11 +44,9 @@ rm -- "${BASH_SOURCE[0]}"
 
 # Vérification de la suppression du fichier
 if [ ! -f "${BASH_SOURCE[0]}" ]; then
-	echo ""
 	echo -e "\e[1;32mLe fichier a été supprimé avec succès.\e[0m"
 	echo ""
 else
-	echo ""
 	echo -e "\e[1;31mErreur lors de la suppression du fichier.\e[0m"
 	echo ""
 	exit 1
@@ -57,3 +54,4 @@ fi
 
 # Affichage du message en vert et en gras
 echo -e "\e[1;32mInstallation et configuration terminées.\e[0m"
+echo ""
