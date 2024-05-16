@@ -3,7 +3,7 @@
 # Chemins des fichiers et dossiers
 script_dir="/root/Script_Prod"
 script_file="$script_dir/git_auto"
-github_url="https://github.com/Ezio-33/Script_Prod/blob/main/Script_git/git_auto"
+github_url="https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/git_auto"
 
 # Création du dossier s'il n'existe pas déjà
 mkdir -p "$script_dir"
