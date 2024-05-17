@@ -46,10 +46,10 @@ rm -- "${BASH_SOURCE[0]}"
 
 # Vérification de la suppression du fichier
 if [ ! -f "${BASH_SOURCE[0]}" ]; then
-	echo -e "\e[1;32mLe fichier a été supprimé avec succès.\e[0m"
+	echo -e "\e[1;32mLe fichier d'installation a été supprimé avec succès.\e[0m"
 	echo ""
 else
-	echo -e "\e[1;31mErreur lors de la suppression du fichier.\e[0m"
+	echo -e "\e[1;31mErreur lors de la suppression du fichier d'installation.\e[0m"
 	echo ""
 	exit 1
 fi
