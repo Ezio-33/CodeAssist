@@ -29,7 +29,7 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 
 ### Téléchargement et préparation
 
-1. **Ouvrez votre terminal** :
+1. **Ouvrez votre terminal en mode super utilisateur** :
    Cela peut généralement être fait en cherchant "terminal" dans les applications de votre système.
 
 2. **Téléchargez le script Install_Script**:
