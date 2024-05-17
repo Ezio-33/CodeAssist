@@ -31,6 +31,13 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 
 1. **Ouvrez votre terminal en mode super utilisateur** :
    Cela peut généralement être fait en cherchant "terminal" dans les applications de votre système.
+   Si vous n’êtes pas en super utilisateur vous pouvez le devenir avec le commande:
+
+   ```bash
+   sudo -i
+   ```
+
+   Attention il vous faudra entrer votre mot de passe
 
 2. **Téléchargez le script Install_Script**:
    ```bash
