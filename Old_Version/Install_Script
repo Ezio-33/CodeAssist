@@ -2,28 +2,27 @@
 
 # Chemins des fichiers et dossiers
 script_dir="/root/Script_Prod"
+script_file="$script_dir/git_auto"
 github_url=("https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/git_auto" "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Preparation_Projet")
 
 # Création du dossier s'il n'existe pas déjà
 mkdir -p "$script_dir"
 
-# Téléchargement des scripts depuis GitHub
+# Téléchargement du script git_auto depuis GitHub
 curl_options="-fsSL" 
-for url in "${github_url[@]}"; do
-    script_file="$script_dir/$(basename $url)"
-    if curl $curl_options -o "$script_file" -z "$script_file" "$url"; then
-        echo ""
-        echo -e "\e[1;32mScript $(basename $url) téléchargé avec succès.\e[0m"
-        echo ""
-    else
-        echo ""
-        echo -e "\e[1;31mErreur lors du téléchargement du script $(basename $url) depuis GitHub.\e[0m"
-        echo ""
-        exit 1
-    fi
-    # Attribution des droits d'exécution au script
-    chmod u+x "$script_file"
-done
+if curl $curl_options -o "$script_file" -z "$script_file" "$github_url"; then
+    echo ""
+    echo -e "\e[1;32mScript git_auto téléchargé avec succès.\e[0m"
+	echo ""
+else
+    echo ""
+    echo -e "\e[1;31mErreur lors du téléchargement du script git_auto depuis GitHub.\e[0m"
+	echo ""
+    exit 1
+fi
+
+# Attribution des droits d'exécution au script
+chmod u+x "$script_file"
 
 # Vérification si le script est déjà dans le PATH
 if ! command -v git_auto >/dev/null; then
@@ -47,12 +46,12 @@ rm -- "${BASH_SOURCE[0]}"
 
 # Vérification de la suppression du fichier
 if [ ! -f "${BASH_SOURCE[0]}" ]; then
-    echo -e "\e[1;32mLe fichier d'installation a été supprimé avec succès.\e[0m"
-    echo ""
+	echo -e "\e[1;32mLe fichier d'installation a été supprimé avec succès.\e[0m"
+	echo ""
 else
-    echo -e "\e[1;31mErreur lors de la suppression du fichier d'installation.\e[0m"
-    echo ""
-    exit 1
+	echo -e "\e[1;31mErreur lors de la suppression du fichier d'installation.\e[0m"
+	echo ""
+	exit 1
 fi
 
 # Affichage du message en vert et en gras

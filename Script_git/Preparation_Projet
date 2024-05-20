@@ -1,0 +1,90 @@
+#!/bin/bash
+
+CLEAR_LINE=$(tput cuu1 && tput el)
+EXIT_MSG=$(tput bold;tput setaf 2; echo "$CLEAR_LINE Programme terminé.";tput sgr0)
+
+echo "Combien de fichiers voulez-vous créer ? (decompte a partir de 0)"
+read nb_fichiers
+
+# Vérification que l'entrée est un nombre positif
+while ! [[ "$nb_fichiers" =~ ^[0-9]+$ ]] || [ "$nb_fichiers" -le 0 ]; do
+    if [ "$nb_fichiers" == "exit" ]; then
+        echo "$EXIT_MSG"
+        exit 0
+    fi
+    echo -e "$CLEAR_LINE\033[1;31mErreur, veuillez entrer un nombre positif.\033[0m"
+    echo "Combien de fichiers voulez-vous créer ?"
+    read nb_fichiers
+done
+
+echo "Entrez l'extension des fichiers (par exemple, py, txt, etc.) :"
+read extension
+if [ "$extension" == "exit" ]; then
+    echo "$EXIT_MSG"
+    exit 0
+fi
+
+while true; do
+    echo "Voulez-vous créer des fichiers de test ? (O/N)"
+    read creer_tests
+
+    if [ "$creer_tests" == "exit" ]; then
+        echo "$EXIT_MSG"
+        exit 0
+    fi
+
+    creer_tests=$(echo "$creer_tests" | tr '[:upper:]' '[:lower:]') # Convertir en minuscules
+
+    if [ "$creer_tests" != "o" ] && [ "$creer_tests" != "n" ]; then
+        echo "$CLEAR_LINE"
+        echo -e "\033[1;31mErreur, veuillez choisir entre \"O\" pour oui et \"N\" pour non.\033[0m"
+        echo ""
+    else
+        break
+    fi
+done
+
+while true; do
+    echo "Voulez-vous créer des fichiers main.py ? (O/N)"
+    read creer_main
+
+    if [ "$creer_main" == "exit" ]; then
+        echo "$EXIT_MSG"
+        exit 0
+    fi
+
+    creer_main=$(echo "$creer_main" | tr '[:upper:]' '[:lower:]') # Convertir en minuscules
+
+    if [ "$creer_main" != "o" ] && [ "$creer_main" != "n" ]; then
+        echo "$CLEAR_LINE"
+        echo -e "\033[1;31mErreur, veuillez choisir entre \"O\" pour oui et \"N\" pour non.\033[0m"
+        echo ""
+    else
+        break
+    fi
+done
+
+for ((i=0; i<$nb_fichiers; i++))
+do
+    echo "Entrez le nom du fichier $i (sans l'extension) :"
+    read nom_fichier
+
+    if [ "$nom_fichier" == "exit" ]; then
+        echo "$EXIT_MSG"
+        exit 0
+    fi
+
+    touch "$nom_fichier.$extension"
+    chmod u+x "$nom_fichier.$extension"
+
+    if [ "$creer_tests" == "o" ]; then
+        mkdir -p tests
+        touch "tests/$nom_fichier.txt"
+        chmod u+x "tests/$nom_fichier.txt"
+    fi
+
+    if [ "$creer_main" == "o" ]; then
+        touch "$i-main.py"
+        chmod u+x "$i-main.py"
+    fi
+done

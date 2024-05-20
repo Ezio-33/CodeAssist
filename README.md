@@ -25,6 +25,17 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 - Demande un commentaire de commit à l'utilisateur et effectue le commit et le push avec ce commentaire.
 - Affiche des messages de confirmation en couleur pour une meilleure visibilité.
 
+### Preparation_Projet
+
+Ce script permet de créer automatiquement plusieurs fichiers avec une extension spécifiée par l'utilisateur, ainsi que des fichiers de test et des fichiers `main.py` si souhaité. Voici ses fonctionnalités :
+
+- Demande à l'utilisateur combien de fichiers il souhaite créer.
+- Vérifie que l'entrée est un nombre positif.
+- Demande l'extension des fichiers à créer.
+- Demande si l'utilisateur souhaite créer des fichiers de test.
+- Demande si l'utilisateur souhaite créer des fichiers `main.py`.
+- Crée les fichiers avec les noms et extensions spécifiés, ainsi que les fichiers de test et `main.py` si demandé.
+
 ## Installation
 
 ### Téléchargement et préparation
@@ -55,11 +66,22 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 
 ## Utilisation
 
+### Git_Auto
+
 Après l'installation, vous pouvez utiliser git_auto pour gérer vos projets.
 Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez :
 
 ```bash
 git_auto
+```
+
+### Preparation_Projet
+
+Après l'installation, vous pouvez créer vos fichier de facon automatique pour vos projets, pouvez utiliser le script Preparation_Projet.
+Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez :
+
+```bash
+Preparation_Projet
 ```
 
 ## Contact
