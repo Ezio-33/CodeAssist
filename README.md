@@ -84,6 +84,12 @@ Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, pui
 Preparation_Projet
 ```
 
+Pour quite le script, tapez la commande:
+
+```bash
+exit
+```
+
 ## Contact
 
 Pour toute question ou support, veuillez ouvrir un issue dans le dépôt GitHub du projet.
