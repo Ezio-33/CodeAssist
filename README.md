@@ -55,7 +55,7 @@ Ce script permet de créer automatiquement plusieurs fichiers avec une extension
    curl -o Install_Script.sh https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Install_Script
    ```
 3. **Rendez le script exécutable**:
-   Une fois dans le dossier ou vous avez télécharger le Script d'installation
+   Une fois dans le dossier ou vous avez téléchargé le Script d'installation
    ```bash
    chmod +x Install_Script.sh
    ```
@@ -77,14 +77,14 @@ git_auto
 
 ### Preparation_Projet
 
-Après l'installation, vous pouvez créer vos fichier de façon automatique pour vos projets.
+Après l'installation, vous pouvez créer vos fichiers de façon automatique pour vos projets.
 Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez la commande:
 
 ```bash
 Preparation_Projet
 ```
 
-Pour quite le script, tapez la commande:
+Pour quitter le script, tapez la commande:
 
 ```bash
 exit
