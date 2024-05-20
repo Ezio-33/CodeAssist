@@ -69,7 +69,7 @@ Ce script permet de créer automatiquement plusieurs fichiers avec une extension
 ### Git_Auto
 
 Après l'installation, vous pouvez utiliser git_auto pour gérer vos projets.
-Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez :
+Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez la commande:
 
 ```bash
 git_auto
@@ -77,8 +77,8 @@ git_auto
 
 ### Preparation_Projet
 
-Après l'installation, vous pouvez créer vos fichier de facon automatique pour vos projets, pouvez utiliser le script Preparation_Projet.
-Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez :
+Après l'installation, vous pouvez créer vos fichier de façon automatique pour vos projets.
+Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez la commande:
 
 ```bash
 Preparation_Projet
