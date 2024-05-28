@@ -29,6 +29,7 @@ Ce script facilite la gestion des mises à jour des projets sur GitHub. Voici se
 
 Ce script permet de créer automatiquement plusieurs fichiers avec une extension spécifiée par l'utilisateur, ainsi que des fichiers de test et des fichiers `main.py` si souhaité. Voici ses fonctionnalités :
 
+- Demande à l'utilisateur le nom de son projet pour crée un README avec ce nom a l’intérieur.
 - Demande à l'utilisateur combien de fichiers il souhaite créer.
 - Vérifie que l'entrée est un nombre positif.
 - Demande l'extension des fichiers à créer.

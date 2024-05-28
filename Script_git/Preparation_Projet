@@ -3,6 +3,16 @@
 CLEAR_LINE=$(tput cuu1 && tput el)
 EXIT_MSG=$(tput bold;tput setaf 2; echo "$CLEAR_LINE Programme terminé.";tput sgr0)
 
+echo "Entrez le nom du projet :"
+read nom_projet
+
+if [ "$nom_projet" == "exit" ]; then
+    echo "$EXIT_MSG"
+    exit 0
+fi
+touch "README.md"
+echo "# $nom_projet" > README.md
+
 echo "Combien de fichiers voulez-vous créer ? (decompte a partir de 0)"
 read nb_fichiers
 
