@@ -51,18 +51,9 @@ Ce script permet de créer automatiquement plusieurs fichiers avec une extension
 
    Attention il vous faudra entrer votre mot de passe
 
-2. **Téléchargez le script Install_Script**:
+2. **Télécharge et exécute le script Install_Script**:
    ```bash
-   curl -o Install_Script.sh https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Install_Script
-   ```
-3. **Rendez le script exécutable**:
-   Une fois dans le dossier ou vous avez téléchargé le Script d'installation
-   ```bash
-   chmod +x Install_Script.sh
-   ```
-4. **Exécutez le script Install_Script dans le shell actuel en utilisant la commande**:
-   ```bash
-   source ./Install_Script.sh
+   curl -o Install_Script.sh https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Install_Script && chmod +x Install_Script.sh && source ./Install_Script.sh
    ```
 
 ## Utilisation
