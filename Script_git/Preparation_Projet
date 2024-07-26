@@ -55,7 +55,7 @@ while true; do
 done
 
 while true; do
-    echo "Voulez-vous créer des fichiers main.py ? (O/N)"
+    echo "Voulez-vous créer des fichiers main.$extension ? (O/N)"
     read creer_main
 
     if [ "$creer_main" == "exit" ]; then
@@ -94,7 +94,7 @@ do
     fi
 
     if [ "$creer_main" == "o" ]; then
-        touch "$i-main.py"
-        chmod u+x "$i-main.py"
+        touch "$i-main.$extension"
+        chmod u+x "$i-main.$extension"
     fi
 done

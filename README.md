@@ -34,8 +34,8 @@ Ce script permet de créer automatiquement plusieurs fichiers avec une extension
 - Vérifie que l'entrée est un nombre positif.
 - Demande l'extension des fichiers à créer.
 - Demande si l'utilisateur souhaite créer des fichiers de test.
-- Demande si l'utilisateur souhaite créer des fichiers `main.py`.
-- Crée les fichiers avec les noms et extensions spécifiés, ainsi que les fichiers de test et `main.py` si demandé.
+- Demande si l'utilisateur souhaite créer des fichiers `main`avec l’extension choisi précédemment.
+- Crée les fichiers avec les noms et extensions spécifiés, ainsi que les fichiers de test et `main` si demandé.
 
 ## Installation
 
