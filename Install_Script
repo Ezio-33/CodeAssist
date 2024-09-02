@@ -30,8 +30,9 @@ for url in "${github_url[@]}"; do
     chmod u+x "$script_file"
 done
 
-# Ajout des dependances au script Fix_Pycodestyle et Fix_Js
-pip install --upgrade autopep8
+# Installer les dernières versions compatibles des dépendances Python
+pip install --upgrade autopep8 flake8
+
 # Vérification si ESLint est déjà installé
 if command -v eslint >/dev/null; then
     # Mettre à jour ESLint à la dernière version
@@ -43,8 +44,6 @@ fi
 
 # Mettre à jour npm à la dernière version
 npm install -g npm@latest
-
-
 
 # Vérification si le script est déjà dans le PATH
 if ! command -v git_auto >/dev/null; then
@@ -59,8 +58,8 @@ if ! command -v git_auto >/dev/null; then
         sed -i '/^#    \. \/etc\/bash_completion/s/^#//' ~/.bashrc
         sed -i '/^#fi/s/^#//' ~/.bashrc
     fi
-# Rechargement du fichier .bashrc pour appliquer les modifications
-source ~/.bashrc
+    # Rechargement du fichier .bashrc pour appliquer les modifications
+    source ~/.bashrc
 fi
 
 # Auto-suppression du script
