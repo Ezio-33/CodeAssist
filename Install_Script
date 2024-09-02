@@ -2,7 +2,12 @@
 
 # Chemins des fichiers et dossiers
 script_dir="/root/.Script_Prod"
-github_url=("https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/git_auto" "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Preparation_Projet")
+github_url=(
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/git_auto"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Preparation_Projet"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Fix_js"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Fix_Pycode"
+)
 
 # Création du dossier s'il n'existe pas déjà
 mkdir -p "$script_dir"
@@ -24,6 +29,22 @@ for url in "${github_url[@]}"; do
     # Attribution des droits d'exécution au script
     chmod u+x "$script_file"
 done
+
+# Ajout des dependances au script Fix_Pycodestyle et Fix_Js
+pip install --upgrade autopep8
+# Vérification si ESLint est déjà installé
+if command -v eslint >/dev/null; then
+    # Mettre à jour ESLint à la dernière version
+    npm install --global eslint@latest
+else
+    # Installer ESLint à la dernière version
+    npm install --global eslint@latest
+fi
+
+# Mettre à jour npm à la dernière version
+npm install -g npm@latest
+
+
 
 # Vérification si le script est déjà dans le PATH
 if ! command -v git_auto >/dev/null; then

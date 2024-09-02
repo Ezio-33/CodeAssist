@@ -37,6 +37,14 @@ Ce script permet de créer automatiquement plusieurs fichiers avec une extension
 - Demande si l'utilisateur souhaite créer des fichiers `main`avec l’extension choisi précédemment.
 - Crée les fichiers avec les noms et extensions spécifiés, ainsi que les fichiers de test et `main` si demandé.
 
+### Fix_Pycode
+
+Ce script vous permet de corriger les erreurs de formatage et de vérifier le style de vos fichiers Python.
+
+### Fix_JS
+
+Ce script vous permet de corriger les erreurs de formatage et de vérifier le style de vos fichiers JavaScript.
+
 ## Installation
 
 ### Téléchargement et préparation
@@ -80,6 +88,24 @@ Pour quitter le script, tapez la commande:
 
 ```bash
 exit
+```
+
+### Fix_Pycode
+
+Après l'installation, vous pouvez formater et vérifier le style de vos fichiers Python.
+Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez la commande:
+
+```bash
+Fix_Pycode
+```
+
+### Fix_JS
+
+Après l'installation, vous pouvez corriger les erreurs de style de vos fichiers JavaScript.
+Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez la commande:
+
+```bash
+Fix_JS
 ```
 
 ## Contact

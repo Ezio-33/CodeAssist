@@ -1,0 +1,4 @@
+#!/bin/bash
+autopep8 --in-place --aggressive --aggressive *.py
+clear
+pycodestyle --exclude '*main.py' *.py
