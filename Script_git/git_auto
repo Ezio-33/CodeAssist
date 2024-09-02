@@ -1,18 +1,19 @@
 #!/bin/bash
-# Définition des séquences d'échappement ANSI pour les couleurs
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
 
 # Fonction pour vérifier si l'utilisateur a saisi "exit"
 check_exit() {
     if [ "$1" = "exit" ]; then
+        tput bold
+        tput setaf 2 # Définir la couleur en vert
         echo "Sortie du script."
+        tput sgr0
         exit 0
     fi
 }
 
-# Pour le travail à plusieurs, effectuer un git pull pour éviter les conflits
-git pull
+#Pour le travail a plusieurs Effectuer un git pull avec autostash
+git pull --autostash
+
 
 # Ajouter les droits d'exécution à tous les utilisateurs
 chmod -R u+x *
