@@ -2,43 +2,57 @@
 # Définition des séquences d'échappement ANSI pour les couleurs
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
-#Pour le travail a plusieurs effectue un git pull pour evite les conflis 
+
+# Fonction pour vérifier si l'utilisateur a saisi "exit"
+check_exit() {
+    if [ "$1" = "exit" ]; then
+        echo "Sortie du script."
+        exit 0
+    fi
+}
+
+# Pour le travail à plusieurs, effectuer un git pull pour éviter les conflits
 git pull
-#ajoute les droit d'execution a tout les utilisateur
+
+# Ajouter les droits d'exécution à tous les utilisateurs
 chmod -R u+x *
+
 # Demander à l'utilisateur s'il veut ajouter tous les fichiers ou spécifier un fichier
 while true; do
-	echo "Voulez-vous ajouter tous les fichiers ? (O/N)"
-	read choice
+    echo "Voulez-vous ajouter tous les fichiers ? (O/N)"
+    read -e choice
+    check_exit "$choice"
 
-	if [ "$choice" != "o" ] && [ "$choice" != "O" ] && [ "$choice" != "n" ] && [ "$choice" != "N" ]; then
-		echo ""
-		echo -e "\033[1;31mErreur, veuillez choisir entre \"O\" pour oui et \"N\" pour non.\033[0m"
-		echo ""
-	else
-		break
-	fi
+    if [ "$choice" != "o" ] && [ "$choice" != "O" ] && [ "$choice" != "n" ] && [ "$choice" != "N" ]; then
+        echo ""
+        echo -e "\033[1;31mErreur, veuillez choisir entre \"O\" pour oui et \"N\" pour non.\033[0m"
+        echo ""
+    else
+        break
+    fi
 done
 
 if [ "$choice" = "n" ] || [ "$choice" = "N" ]; then
-	echo "Entrez le nom du fichier à ajouter :"
-	read filename
-	git add "$filename"
-	added_message="$filename a été"
+    echo "Entrez le nom du fichier à ajouter :"
+    read -e filename
+    check_exit "$filename"
+    git add "$filename"
+    added_message="$filename a été"
 else
-	git add .
-	added_message="Tous les fichiers ont été"
+    git add .
+    added_message="Tous les fichiers ont été"
 fi
 
 # Demander à l'utilisateur de saisir le commentaire du commit
 echo "Entrez le commentaire de mise à jour du commit :"
-read comment
+read -e comment
+check_exit "$comment"
 
 # Effectuer le commit et le push avec le commentaire spécifié
 git commit -m "$comment"
 git push
 
-# Mets le texte en gras et change la couleur
+# Mettre le texte en gras et changer la couleur
 tput bold
 tput setaf 2 # Définir la couleur en vert
 
