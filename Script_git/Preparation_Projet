@@ -3,6 +3,20 @@
 CLEAR_LINE=$(tput cuu1 && tput el)
 EXIT_MSG=$(tput bold;tput setaf 2; echo "$CLEAR_LINE Programme terminé.";tput sgr0)
 
+# Liste des extensions de fichier informatique courantes
+VALID_EXTENSIONS=("sh" "py" "txt" "java" "c" "cpp" "js" "html" "css" "rb" "php" "go" "rs" "swift" "kt" "ts")
+
+# Fonction pour vérifier si une extension est valide
+is_valid_extension() {
+    local ext="$1"
+    for valid_ext in "${VALID_EXTENSIONS[@]}"; do
+        if [ "$ext" == "$valid_ext" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
 echo "Entrez le nom du projet :"
 read -e nom_projet
 
@@ -33,6 +47,17 @@ if [ "$extension" == "exit" ]; then
     echo "$EXIT_MSG"
     exit 0
 fi
+
+# Vérification de l'extension par défaut
+while ! is_valid_extension "$extension"; do
+    echo -e "$CLEAR_LINE\033[1;31mErreur, veuillez entrer une extension de fichier valide.\033[0m"
+    echo "Entrez l'extension des fichiers (par exemple, py, txt, etc.) :"
+    read -e extension
+    if [ "$extension" == "exit" ]; then
+        echo "$EXIT_MSG"
+        exit 0
+    fi
+done
 
 while true; do
     echo "Voulez-vous créer des fichiers de test ? (O/N)"
@@ -84,8 +109,20 @@ do
         exit 0
     fi
 
-    touch "$nom_fichier.$extension"
-    chmod u+x "$nom_fichier.$extension"
+    # Vérifier si le nom de fichier contient une extension
+    if [[ "$nom_fichier" == *.* ]]; then
+        fichier="$nom_fichier"
+        ext="${nom_fichier##*.}"
+        if ! is_valid_extension "$ext"; then
+            echo -e "$CLEAR_LINE\033[1;31mErreur, l'extension $ext n'est pas valide.\033[0m"
+            exit 1
+        fi
+    else
+        fichier="$nom_fichier.$extension"
+    fi
+
+    touch "$fichier"
+    chmod u+x "$fichier"
 
     if [ "$creer_tests" == "o" ]; then
         mkdir -p tests
@@ -94,7 +131,12 @@ do
     fi
 
     if [ "$creer_main" == "o" ]; then
-        touch "$i-main.$extension"
-        chmod u+x "$i-main.$extension"
+        if [[ "$nom_fichier" == *.* ]]; then
+            main_fichier="${nom_fichier%.*}-main.${nom_fichier##*.}"
+        else
+            main_fichier="$i-main.$extension"
+        fi
+        touch "$main_fichier"
+        chmod u+x "$main_fichier"
     fi
 done
