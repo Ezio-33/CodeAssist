@@ -1,2 +1,5 @@
 #!/bin/bash
-npx eslint *.js --fix
+#npx eslint *.js --fix
+
+# Corriger les fichiers JavaScript avec eslint
+npx eslint . --ext .js --fix

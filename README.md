@@ -45,6 +45,20 @@ Ce script vous permet de corriger les erreurs de formatage et de vérifier le st
 
 Ce script vous permet de corriger les erreurs de formatage et de vérifier le style de vos fichiers JavaScript.
 
+### Merge
+
+Ce script facilite le processus de merge entre deux branches Git. Voici ses fonctionnalités :
+
+- Vérifie si le répertoire courant est un dépôt Git valide.
+- Affiche les branches disponibles.
+- Demande à l'utilisateur de spécifier la branche source et la branche cible pour le merge.
+- Vérifie si la branche cible existe.
+- Vérifie si la branche source a déjà été mergée dans la branche courante.
+- Gère les modifications non commitées avant de procéder au merge.
+- Effectue le merge de la branche source dans la branche cible.
+- Demande à l'utilisateur s'il souhaite pousser les changements vers le dépôt distant.
+- Retourne à la branche originale après le merge.
+
 ## Installation
 
 ### Téléchargement et préparation
@@ -106,6 +120,15 @@ Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, pui
 
 ```bash
 Fix_JS
+```
+
+### Merge
+
+Après l'installation, vous pouvez utiliser le script `Merge` pour faciliter le processus de merge entre deux branches Git.
+Assurez-vous que le terminal est ouvert dans le répertoire de votre projet, puis exécutez la commande:
+
+```bash
+Merge
 ```
 
 ## Contact

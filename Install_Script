@@ -1,5 +1,31 @@
 #!/bin/bash
 
+# Arrêter le script en cas d'erreur
+set -e
+
+# Fonction pour gérer les erreurs
+handle_error() {
+    echo -e "\e[1;31mUne erreur s'est produite. Nettoyage et sortie...\e[0m"
+    # Ajoutez ici des commandes de nettoyage si nécessaire
+    exit 1
+}
+
+# Utilisation de trap pour gérer les erreurs et le nettoyage
+trap 'handle_error' ERR
+
+# Fonction pour vérifier les dépendances
+check_dependency() {
+    if ! command -v "$1" &> /dev/null; then
+        echo -e "\e[1;31mErreur: $1 n'est pas installé. Veuillez l'installer et réessayer.\e[0m"
+        exit 1
+    fi
+}
+
+# Vérification des dépendances
+check_dependency curl
+check_dependency pip
+check_dependency npm
+
 # Chemins des fichiers et dossiers
 script_dir="/root/.Script_Prod"
 github_url=(
@@ -15,66 +41,50 @@ mkdir -p "$script_dir"
 # Téléchargement des scripts depuis GitHub
 curl_options="-fsSL" 
 for url in "${github_url[@]}"; do
-    script_file="$script_dir/$(basename $url)"
+    script_file="$script_dir/$(basename "$url")"
     if curl $curl_options -o "$script_file" -z "$script_file" "$url"; then
-        echo ""
-        echo -e "\e[1;32mScript $(basename $url) téléchargé avec succès.\e[0m"
-        echo ""
+        echo -e "\e[1;32mScript $(basename "$url") téléchargé avec succès.\e[0m"
+        chmod u+x "$script_file"
     else
-        echo ""
-        echo -e "\e[1;31mErreur lors du téléchargement du script $(basename $url) depuis GitHub.\e[0m"
-        echo ""
+        echo -e "\e[1;31mErreur lors du téléchargement du script $(basename "$url") depuis GitHub.\e[0m"
         exit 1
     fi
-    # Attribution des droits d'exécution au script
-    chmod u+x "$script_file"
 done
 
 # Installer les dernières versions compatibles des dépendances Python
 pip install --upgrade autopep8 flake8
 
-# Vérification si ESLint est déjà installé
-if command -v eslint >/dev/null; then
-    # Mettre à jour ESLint à la dernière version
-    npm install --global eslint@latest
-else
-    # Installer ESLint à la dernière version
-    npm install --global eslint@latest
-fi
+# Installer ou mettre à jour ESLint
+npm install --global eslint@latest
 
 # Mettre à jour npm à la dernière version
 npm install -g npm@latest
 
-# Vérification si le script est déjà dans le PATH
-if ! command -v git_auto >/dev/null; then
-    # Ajout du dossier au PATH de manière permanente
-    if ! grep -q "export PATH=\$PATH:$script_dir" ~/.bashrc; then
-        echo "export PATH=\$PATH:$script_dir" >> ~/.bashrc
-    fi
-    # Vérifie si le fichier .bashrc existe
-    if [ -f ~/.bashrc ]; then
-        # Utilise sed pour décommenter les lignes
-        sed -i '/^#if \[ -f \/etc\/bash_completion \] && ! shopt -oq posix; then/s/^#//' ~/.bashrc
-        sed -i '/^#    \. \/etc\/bash_completion/s/^#//' ~/.bashrc
-        sed -i '/^#fi/s/^#//' ~/.bashrc
-    fi
-    # Rechargement du fichier .bashrc pour appliquer les modifications
+# Ajout du dossier au PATH de manière permanente
+if ! grep -q "export PATH=\$PATH:$script_dir" ~/.bashrc; then
+    echo "export PATH=\$PATH:$script_dir" >> ~/.bashrc
+    # Décommenter les lignes de bash_completion si nécessaire
+    sed -i '/^#if \[ -f \/etc\/bash_completion \] && ! shopt -oq posix; then/s/^#//' ~/.bashrc
+    sed -i '/^#    \. \/etc\/bash_completion/s/^#//' ~/.bashrc
+    sed -i '/^#fi/s/^#//' ~/.bashrc
+    # Rechargement du fichier .bashrc
     source ~/.bashrc
 fi
 
-# Auto-suppression du script
-rm -- "${BASH_SOURCE[0]}"
+# Fonction pour supprimer le script d'installation
+cleanup() {
+    if [ -f "${BASH_SOURCE[0]}" ]; then
+        rm -- "${BASH_SOURCE[0]}"
+        if [ ! -f "${BASH_SOURCE[0]}" ]; then
+            echo -e "\e[1;32mLe fichier d'installation a été supprimé avec succès.\e[0m"
+        else
+            echo -e "\e[1;31mErreur lors de la suppression du fichier d'installation.\e[0m"
+            exit 1
+        fi
+    fi
+}
 
-# Vérification de la suppression du fichier
-if [ ! -f "${BASH_SOURCE[0]}" ]; then
-    echo -e "\e[1;32mLe fichier d'installation a été supprimé avec succès.\e[0m"
-    echo ""
-else
-    echo -e "\e[1;31mErreur lors de la suppression du fichier d'installation.\e[0m"
-    echo ""
-    exit 1
-fi
+# Utilisation de trap pour assurer la suppression du script à la fin de l'exécution
+trap cleanup EXIT
 
-# Affichage du message en vert et en gras
 echo -e "\e[1;32mInstallation et configuration terminées.\e[0m"
-echo ""
