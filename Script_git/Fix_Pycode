@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# Corriger les fichiers Python avec autopep8
 autopep8 --in-place --aggressive --aggressive *.py
+
+# Nettoyer l'écran
 clear
-pycodestyle --exclude '*main.py' *.py
+
+# Vérifier le style des fichiers Python avec pycodestyle, en excluant les fichiers 'main.py'
+pycodestyle --exclude='*main.py' *.py
