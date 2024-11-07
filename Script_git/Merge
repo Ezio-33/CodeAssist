@@ -1,0 +1,185 @@
+#!/bin/bash
+
+# Fonction pour afficher les branches disponibles
+function show_branches {
+    echo "Branches disponibles :"
+    git branch -a
+}
+
+# Fonction pour la complétion des noms de branches
+function branch_completion {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=($(compgen -W "$(git branch --format='%(refname:short)')" -- "$cur"))
+}
+
+# Activer la complétion pour la fonction get_branch_name
+complete -F branch_completion get_branch_name
+
+# Fonction pour demander et valider le nom d'une branche
+function get_branch_name {
+    local branch_name
+    local prompt="$1"
+    
+    # Activer le mode de lecture avancé
+    if [[ $BASH_VERSION =~ ^4 ]]; then
+        bind '"\e[A": history-search-backward'
+        bind '"\e[B": history-search-forward'
+    fi
+
+    while true; do
+        read -e -p "$prompt" branch_name
+
+        if [[ $branch_name == "quitter" ]]; then
+            echo "Opération annulée par l'utilisateur."
+            exit 0
+        elif git show-ref --verify --quiet refs/heads/$branch_name || git show-ref --verify --quiet refs/remotes/origin/$branch_name; then
+            echo $branch_name
+            return
+        else
+            echo "La branche '$branch_name' n'existe pas. Veuillez réessayer ou tapez 'quitter' pour annuler."
+        fi
+    done
+}
+
+# Fonction pour gérer les modifications non commitées
+function handle_uncommitted_changes {
+    echo "ATTENTION : Il y a des modifications non commitées dans votre répertoire de travail."
+    echo "Options :"
+    echo "1. Commiter les modifications"
+    echo "2. Stasher les modifications"
+    echo "3. Abandonner les modifications"
+    echo "4. Annuler l'opération de merge"
+    read -p "Choisissez une option (1-4) : " choice
+
+    case $choice in
+        1)
+            git add .
+            read -p "Entrez un message de commit : " commit_message
+            git commit -m "$commit_message"
+            ;;
+        2)
+            git stash
+            echo "Modifications stashées."
+            ;;
+        3)
+            git reset --hard
+            echo "Modifications abandonnées."
+            ;;
+        4)
+            echo "Opération de merge annulée."
+            exit 1
+            ;;
+        *)
+            echo "Option invalide. Opération annulée."
+            exit 1
+            ;;
+    esac
+}
+
+# Fonction pour vérifier les modifications non commitées
+function check_uncommitted_changes {
+    if ! git diff-index --quiet HEAD --; then
+        handle_uncommitted_changes
+    fi
+}
+
+# Fonction pour vérifier si une branche a déjà été mergée
+function check_if_merged {
+    local branch=$1
+    if git branch --merged | grep -q "\<$branch\>"; then
+        echo "ATTENTION : La branche '$branch' semble déjà avoir été mergée dans la branche courante."
+        read -p "Voulez-vous continuer quand même ? (oui/non) : " continue_merge
+        if [[ $continue_merge != "oui" ]]; then
+            echo "Opération annulée."
+            exit 1
+        fi
+    fi
+}
+
+# Gestion des erreurs
+set -e
+
+# Vérifier si nous sommes dans un répertoire Git
+if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "Erreur : Ce n'est pas un répertoire Git valide."
+    exit 1
+fi
+
+# Sauvegarder la branche actuelle
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Vérifier les modifications non commitées
+check_uncommitted_changes
+
+# Afficher les branches disponibles
+show_branches
+
+# Demander la branche source
+source_branch=$(get_branch_name "Entrez le nom de la branche source (celle qui envoie les informations) : ")
+
+# Demander la branche cible
+target_branch=$(get_branch_name "Entrez le nom de la branche cible (celle qui reçoit la mise à jour) : ")
+
+# Vérifier si la branche cible existe
+if ! git show-ref --verify --quiet refs/heads/$target_branch && ! git show-ref --verify --quiet refs/remotes/origin/$target_branch; then
+    echo "Erreur : La branche cible '$target_branch' n'existe pas."
+    exit 1
+fi
+
+# Vérifier si la branche source a déjà été mergée
+check_if_merged $source_branch
+
+# Confirmer les branches avant de procéder
+echo "Vous allez merger la branche '$source_branch' dans la branche '$target_branch'."
+read -p "Êtes-vous sûr de vouloir continuer ? (oui/non) : " confirmation
+if [[ $confirmation != "oui" ]]; then
+    echo "Merge annulé."
+    exit 1
+fi
+
+# Effectuer le merge
+echo "Tentative de merge de '$source_branch' dans '$target_branch'..."
+if ! git checkout $target_branch; then
+    echo "Erreur lors du checkout de la branche $target_branch."
+    check_uncommitted_changes
+    git checkout $target_branch
+fi
+
+if git merge --no-commit --no-ff $source_branch; then
+    # Vérifier s'il y a des changements à commiter
+    if git diff-index --quiet HEAD --; then
+        echo "Aucun changement à commiter après le merge. La branche est déjà à jour."
+    else
+        echo "Des changements ont été détectés après le merge."
+        git commit -m "Merge de '$source_branch' dans '$target_branch'"
+        echo "Merge réussi de '$source_branch' dans '$target_branch'."
+        
+        # Demander si l'utilisateur veut pousser les changements
+        read -p "Voulez-vous pousser les changements vers le dépôt distant ? (oui/non) : " push_changes
+        if [[ $push_changes == "oui" ]]; then
+            git push origin $target_branch
+            echo "Les changements ont été poussés vers le dépôt distant."
+            
+            # Si la branche cible est 'main', ajouter un message supplémentaire
+            if [[ $target_branch == "main" ]]; then
+                echo "La branche main a été mise à jour avec les changements de $source_branch."
+            fi
+        else
+            echo "Les changements n'ont pas été poussés. N'oubliez pas de les pousser manuellement plus tard."
+        fi
+    fi
+    
+    # Retourner à la branche originale
+    git checkout $current_branch
+    echo "Retour à la branche originale : $current_branch"
+else
+    echo "Des conflits sont survenus lors du merge. Veuillez les résoudre manuellement."
+    echo "Une fois les conflits résolus, utilisez 'git add' pour marquer les fichiers comme résolus,"
+    echo "puis 'git commit' pour finaliser le merge."
+    exit 1
+fi
+
+echo "Opération terminée avec succès :"
+echo "- Merge de '$source_branch' dans '$target_branch' effectué"
+echo "- Changements poussés vers le dépôt distant (si applicable)"
+echo "- Retour à la branche originale : $current_branch"
