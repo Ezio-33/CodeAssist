@@ -3,7 +3,7 @@
 # Fonction pour afficher les branches disponibles
 function show_branches {
     echo "Branches disponibles :"
-    git branch -a
+    git --no-pager branch -a
 }
 
 # Fonction pour la complétion des noms de branches
