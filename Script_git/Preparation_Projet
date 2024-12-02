@@ -4,7 +4,7 @@ CLEAR_LINE=$(tput cuu1 && tput el)
 EXIT_MSG=$(tput bold;tput setaf 2; echo "$CLEAR_LINE Programme terminé.";tput sgr0)
 
 # Liste des extensions de fichier informatique courantes
-VALID_EXTENSIONS=("sh" "py" "txt" "java" "c" "cpp" "js" "html" "css" "rb" "php" "go" "rs" "swift" "kt" "ts")
+VALID_EXTENSIONS=("sh" "py" "txt" "java" "c" "cpp" "js" "html" "css" "rb" "php" "go" "rs" "swift" "kt" "ts" "h")
 
 # Fonction pour vérifier si une extension est valide
 is_valid_extension() {
@@ -131,11 +131,7 @@ do
     fi
 
     if [ "$creer_main" == "o" ]; then
-        if [[ "$nom_fichier" == *.* ]]; then
-            main_fichier="${nom_fichier%.*}-main.${nom_fichier##*.}"
-        else
-            main_fichier="$i-main.$extension"
-        fi
+        main_fichier="$i-main.$extension"
         touch "$main_fichier"
         chmod u+x "$main_fichier"
     fi
