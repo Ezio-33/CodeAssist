@@ -58,7 +58,8 @@ tput bold
 tput setaf 2 # Définir la couleur en vert
 
 # Afficher le message approprié en fonction de ce qui a été ajouté
-echo "$added_message mis à jour sur ton GIT-HUB avec le commentaire:"
+date_du_jour=$(date '+%d-%m-%Y %H:%M:%S')
+echo "$added_message mis à jour le $date_du_jour sur ton GIT-HUB avec le commentaire:"
 echo " \" $comment\""
 
 # Rétablir la taille du texte et la couleur par défaut
