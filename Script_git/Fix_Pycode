@@ -7,4 +7,4 @@ autopep8 --in-place --aggressive --aggressive *.py
 clear
 
 # Vérifier le style des fichiers Python avec pycodestyle, en excluant les fichiers 'main.py'
-pycodestyle --exclude='*main.py' *.py
+pycodestyle --exclude='*main*.py' *.py
