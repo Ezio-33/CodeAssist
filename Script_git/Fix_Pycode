@@ -8,6 +8,9 @@ for file in *.py; do
 			echo "Ajout d'un saut de ligne à la fin du fichier $file"
 			echo "" >> "$file"
 		fi
+		
+		# Supprime les espaces blancs en fin de ligne et dans les lignes vides (W293)
+		sed -i 's/[[:space:]]*$//' "$file"
 	fi
 done
 
