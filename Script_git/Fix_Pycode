@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Vérifie et ajoute un saut de ligne à la fin des fichiers .py si nécessaire
+for file in *.py; do
+	if [ -f "$file" ]; then
+		# Vérifie si le fichier ne se termine pas par un saut de ligne
+		if [ -s "$file" ] && [ $(tail -c 1 "$file" | wc -l) -eq 0 ]; then
+			echo "Ajout d'un saut de ligne à la fin du fichier $file"
+			echo "" >> "$file"
+		fi
+	fi
+done
+
 # Corriger les fichiers Python avec autopep8
 autopep8 --in-place --aggressive --aggressive *.py
 
