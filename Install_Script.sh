@@ -73,10 +73,10 @@ fi
 # Chemins des fichiers et dossiers
 script_dir="/root/.Script_Prod"
 github_url=(
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/script/git_auto"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/script/Preparation_Projet"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/script/Fix_js"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/script/Fix_Pycode"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/script/git_auto"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/script/Preparation_Projet"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/script/Fix_js"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/script/Fix_Pycode"
 )
 
 # Création du dossier s'il n'existe pas déjà

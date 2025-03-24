@@ -75,7 +75,7 @@ Ce script facilite le processus de merge entre deux branches Git. Voici ses fonc
 
 2. **Télécharge et exécute le script Install_Script**:
    ```bash
-   curl -o Install_Script.sh https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Install_Script && chmod +x Install_Script.sh && source ./Install_Script.sh
+   curl -o Install_Script.sh https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/Install_Script && chmod +x Install_Script.sh && source ./Install_Script.sh
    ```
 
 ## Utilisation
