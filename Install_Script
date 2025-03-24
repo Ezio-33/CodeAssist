@@ -11,7 +11,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Sauvegarder les fichiers importants avant modification
-backup_dir="/root/.script_backups_$(date +%d-%m-%Y-%H-%M-%S)"
+backup_dir="/root/.backup_script/script_backups_$(date +%d-%m-%Y-%H-%M-%S)"
 mkdir -p "$backup_dir"
 if [ -f ~/.bashrc ]; then
     cp ~/.bashrc "$backup_dir/.bashrc.bak"
@@ -73,10 +73,10 @@ fi
 # Chemins des fichiers et dossiers
 script_dir="/root/.Script_Prod"
 github_url=(
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/git_auto"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Preparation_Projet"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Fix_js"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Fix_Pycode"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script/git_auto"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script/Preparation_Projet"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script/Fix_js"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script/Fix_Pycode"
 )
 
 # Création du dossier s'il n'existe pas déjà
