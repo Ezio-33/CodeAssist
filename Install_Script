@@ -1,4 +1,5 @@
 #!/bin/bash
+# filepath: /root/Script_Prod_Dev/Install_Script
 
 # Arrêter le script en cas d'erreur
 set -e
@@ -6,12 +7,12 @@ set -o pipefail  # Propager les erreurs dans les pipelines
 
 # Vérifier si l'utilisateur est root
 if [ "$(id -u)" -ne 0 ]; then
-   echo -e "\e[1;31mCe script doit être exécuté en tant que root\e[0m" 
+   echo -e "\e[1;31mCe script doit être exécuté en tant que root\e[0m"
    exit 1
 fi
 
 # Sauvegarder les fichiers importants avant modification
-backup_dir="/root/.backup_script/script_backups_$(date +%d-%m-%Y-%H-%M-%S)"
+backup_dir="/root/.backup_script/script_backups_$(date +%d-%m-%Y-%Hh%Mmin%Ss)"
 mkdir -p "$backup_dir"
 if [ -f ~/.bashrc ]; then
     cp ~/.bashrc "$backup_dir/.bashrc.bak"
@@ -37,7 +38,7 @@ handle_error() {
 trap 'handle_error $LINENO' ERR
 
 # Journal d'installation
-log_file="$backup_dir/install_script_$(date +%d-%m-%Y-%H-%M-%S).log"
+log_file="$backup_dir/install_script_$(date +%d-%m-%Y-%Hh%Mmin%Ss).log"
 exec > >(tee -a "$log_file") 2>&1
 echo "--- Log d'installation démarré $(date) ---" >> "$log_file"
 
@@ -128,6 +129,7 @@ cleanup() {
     echo "--- Log d'installation terminé $(date) ---" >> "$log_file"
     echo -e "\e[1;32mLog d'installation disponible dans $backup_dir\e[0m"
     
+    # Suppression du script si on ne l'a pas sourcé
     if [ -f "${BASH_SOURCE[0]}" ] && [ "$1" != "error" ]; then
         if rm -- "${BASH_SOURCE[0]}"; then
             echo -e "\e[1;32mLe fichier d'installation a été supprimé avec succès.\e[0m"
