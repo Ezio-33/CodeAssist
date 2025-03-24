@@ -1,0 +1,190 @@
+#!/bin/bash
+
+# Arrêter le script en cas d'erreur
+set -e
+set -o pipefail  # Propager les erreurs dans les pipelines
+
+# Vérifier si l'utilisateur est root
+if [ "$(id -u)" -ne 0 ]; then
+   echo -e "\e[1;31mCe script doit être exécuté en tant que root\e[0m" 
+   exit 1
+fi
+
+# Sauvegarder les fichiers importants avant modification
+backup_dir="/root/backup_script/.script_backups_$(date +%d-%m-%Y-%Hh%Mmin%Ss)"
+mkdir -p "$backup_dir"
+if [ -f ~/.bashrc ]; then
+    cp ~/.bashrc "$backup_dir/.bashrc.bak"
+fi
+
+# Fonction pour gérer les erreurs
+handle_error() {
+    local err_code=$?
+    local line_num=$1
+    echo -e "\e[1;31mUne erreur s'est produite à la ligne $line_num (code: $err_code)\e[0m"
+    
+    # Restaurer les fichiers si nécessaire
+    if [ -f "$backup_dir/.bashrc.bak" ]; then
+        echo -e "\e[1;33mRestauration de .bashrc...\e[0m"
+        cp "$backup_dir/.bashrc.bak" ~/.bashrc
+    fi
+    
+    echo -e "\e[1;31mUne erreur s'est produite. Nettoyage et sortie...\e[0m"
+    exit 1
+}
+
+# Utilisation de trap pour gérer les erreurs et le nettoyage
+trap 'handle_error $LINENO' ERR
+
+# Journal d'installation
+log_file="$backup_dir/install_script_$(date +%d-%m-%Y-%Hh%Mmin%Ss).log"
+exec > >(tee -a "$log_file") 2>&1
+echo "--- Log d'installation démarré $(date) ---" >> "$log_file"
+
+# Fonction pour exécuter des commandes avec gestion d'erreurs
+run_command() {
+    echo -e "\e[1;34mExécution: $1\e[0m"
+    if ! eval "$1"; then
+        echo -e "\e[1;31mÉchec de la commande: $1\e[0m"
+        return 1
+    fi
+    return 0
+}
+
+# Mettre à jour le system
+echo -e "\e[1;34mMise à jour du système...\e[0m"
+run_command "apt update && apt upgrade -y" || exit 1
+
+# Fonction pour vérifier si une commande existe
+check_command() {
+    if command -v "$1" &> /dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Installer curl si nécessaire
+if ! check_command curl; then
+    echo -e "\e[1;34mInstallation de curl...\e[0m"
+    run_command "apt install -y curl" || exit 1
+fi
+
+# Chemins des fichiers et dossiers
+script_dir="/root/.Script_Prod"
+github_url=(
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/script/git_auto"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/script/Preparation_Projet"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/script/Fix_js"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/script/Fix_Pycode"
+)
+
+# Création du dossier s'il n'existe pas déjà
+mkdir -p "$script_dir"
+
+# Ajouter cette fonction après la déclaration des URLs GitHub et avant le téléchargement
+
+# Fonction pour nettoyer le dossier de scripts
+clean_script_dir() {
+    echo -e "\e[1;34mNettoyage du dossier $script_dir...\e[0m"
+    
+    # Créer un array pour stocker les noms des scripts attendus
+    local expected_scripts=()
+    for url in "${github_url[@]}"; do
+        expected_scripts+=($(basename "$url"))
+    done
+    
+    # Vérifier chaque fichier dans le dossier script_dir
+    if [ -d "$script_dir" ]; then
+        for file in "$script_dir"/*; do
+            if [ -f "$file" ]; then
+                local filename=$(basename "$file")
+                local keep=false
+                
+                # Vérifier si le fichier est dans la liste des scripts attendus
+                for expected in "${expected_scripts[@]}"; do
+                    if [ "$filename" = "$expected" ]; then
+                        keep=true
+                        break
+                    fi
+                done
+                
+                # Supprimer le fichier s'il n'est pas dans la liste des scripts attendus
+                if [ "$keep" = false ]; then
+                    echo -e "\e[1;33mSuppression du fichier non reconnu: $filename\e[0m"
+                    rm -f "$file"
+                fi
+            fi
+        done
+        echo -e "\e[1;32mNettoyage terminé.\e[0m"
+    else
+        echo -e "\e[1;33mLe dossier $script_dir n'existe pas encore.\e[0m"
+    fi
+}
+
+# Création du dossier s'il n'existe pas déjà
+mkdir -p "$script_dir"
+
+# Nettoyer le dossier des scripts avant d'installer les nouveaux
+clean_script_dir
+
+# Installer Node.js
+echo -e "\e[1;34mInstallation de Node.js...\e[0m"
+run_command "curl -fsSL https://deb.nodesource.com/setup_20.x | bash -" || exit 1
+run_command "apt install -y nodejs" || exit 1
+
+# Vérifier les versions
+echo -e "\e[1;34mVérification des versions...\e[0m"
+echo "Node.js version:"
+node -v
+echo "npm version:"
+npm -v
+
+# Installation des outils Python
+echo -e "\e[1;34mInstallation des outils Python...\e[0m"
+run_command "apt install -y python3-pip python3-autopep8 python3-flake8" || exit 1
+
+# Téléchargement des scripts depuis GitHub
+echo -e "\e[1;34mTéléchargement des scripts depuis GitHub...\e[0m"
+for url in "${github_url[@]}"; do
+    script_name=$(basename "$url")
+    echo -e "\e[1;34mTéléchargement de $script_name...\e[0m"
+    if run_command "curl -fsSL '$url' -o '$script_dir/$script_name'"; then
+        echo -e "\e[1;32mScript $script_name téléchargé avec succès.\e[0m"
+        # Rendre le script exécutable
+        chmod +x "$script_dir/$script_name"
+    else
+        echo -e "\e[1;31mÉchec du téléchargement de $script_name.\e[0m"
+        exit 1
+    fi
+done
+
+# Ajout du dossier des scripts au PATH
+echo -e "\e[1;34mAjout du dossier des scripts au PATH...\e[0m"
+if ! grep -q "export PATH=\$PATH:$script_dir" ~/.bashrc; then
+    echo "# Ajouté par le script d'installation" >> ~/.bashrc
+    echo "export PATH=\$PATH:$script_dir" >> ~/.bashrc
+    echo -e "\e[1;32mDossier ajouté au PATH avec succès.\e[0m"
+else
+    echo -e "\e[1;33mLe dossier est déjà dans le PATH.\e[0m"
+fi
+
+# Fonction pour supprimer le script d'installation
+cleanup() {
+    echo "--- Log d'installation terminé $(date) ---" >> "$log_file"
+    echo -e "\e[1;32mLog d'installation disponible dans $backup_dir\e[0m"
+    
+    if [ -f "${BASH_SOURCE[0]}" ] && [ "$1" != "error" ]; then
+        if rm -- "${BASH_SOURCE[0]}"; then
+            echo -e "\e[1;32mLe fichier d'installation a été supprimé avec succès.\e[0m"
+        else
+            echo -e "\e[1;31mErreur lors de la suppression du fichier d'installation.\e[0m"
+        fi
+    fi
+}
+
+# Utilisation de trap pour assurer la suppression du script à la fin de l'exécution
+trap 'cleanup' EXIT
+trap 'cleanup error' ERR
+
+echo -e "\e[1;32mInstallation et configuration terminées.\e[0m"

@@ -15,9 +15,6 @@ check_exit() {
 git pull --autostash
 
 
-# Ajouter les droits d'exécution à tous les utilisateurs
-chmod -R u+x *
-
 # Demander à l'utilisateur s'il veut ajouter tous les fichiers ou spécifier un fichier
 while true; do
     echo "Voulez-vous ajouter tous les fichiers ? (O/N)"
