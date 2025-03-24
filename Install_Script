@@ -11,7 +11,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Sauvegarder les fichiers importants avant modification
-backup_dir="/root/backup_script/.script_backups_$(date +%d-%m-%Y-%Hh%Mmin%Ss)"
+backup_dir="/root/.script_backups_$(date +%d-%m-%Y-%H-%M-%S)"
 mkdir -p "$backup_dir"
 if [ -f ~/.bashrc ]; then
     cp ~/.bashrc "$backup_dir/.bashrc.bak"
@@ -37,7 +37,7 @@ handle_error() {
 trap 'handle_error $LINENO' ERR
 
 # Journal d'installation
-log_file="$backup_dir/install_script_$(date +%d-%m-%Y-%Hh%Mmin%Ss).log"
+log_file="$backup_dir/install_script_$(date +%d-%m-%Y-%H-%M-%S).log"
 exec > >(tee -a "$log_file") 2>&1
 echo "--- Log d'installation démarré $(date) ---" >> "$log_file"
 
@@ -73,60 +73,14 @@ fi
 # Chemins des fichiers et dossiers
 script_dir="/root/.Script_Prod"
 github_url=(
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/script/git_auto"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/script/Preparation_Projet"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/script/Fix_js"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/script/Fix_Pycode"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/git_auto"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Preparation_Projet"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Fix_js"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script_git/Fix_Pycode"
 )
 
 # Création du dossier s'il n'existe pas déjà
 mkdir -p "$script_dir"
-
-# Ajouter cette fonction après la déclaration des URLs GitHub et avant le téléchargement
-
-# Fonction pour nettoyer le dossier de scripts
-clean_script_dir() {
-    echo -e "\e[1;34mNettoyage du dossier $script_dir...\e[0m"
-    
-    # Créer un array pour stocker les noms des scripts attendus
-    local expected_scripts=()
-    for url in "${github_url[@]}"; do
-        expected_scripts+=($(basename "$url"))
-    done
-    
-    # Vérifier chaque fichier dans le dossier script_dir
-    if [ -d "$script_dir" ]; then
-        for file in "$script_dir"/*; do
-            if [ -f "$file" ]; then
-                local filename=$(basename "$file")
-                local keep=false
-                
-                # Vérifier si le fichier est dans la liste des scripts attendus
-                for expected in "${expected_scripts[@]}"; do
-                    if [ "$filename" = "$expected" ]; then
-                        keep=true
-                        break
-                    fi
-                done
-                
-                # Supprimer le fichier s'il n'est pas dans la liste des scripts attendus
-                if [ "$keep" = false ]; then
-                    echo -e "\e[1;33mSuppression du fichier non reconnu: $filename\e[0m"
-                    rm -f "$file"
-                fi
-            fi
-        done
-        echo -e "\e[1;32mNettoyage terminé.\e[0m"
-    else
-        echo -e "\e[1;33mLe dossier $script_dir n'existe pas encore.\e[0m"
-    fi
-}
-
-# Création du dossier s'il n'existe pas déjà
-mkdir -p "$script_dir"
-
-# Nettoyer le dossier des scripts avant d'installer les nouveaux
-clean_script_dir
 
 # Installer Node.js
 echo -e "\e[1;34mInstallation de Node.js...\e[0m"
