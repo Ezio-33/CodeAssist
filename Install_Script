@@ -117,7 +117,7 @@ done
 # Ajout du dossier des scripts au PATH
 echo -e "\e[1;34mAjout du dossier des scripts au PATH...\e[0m"
 if ! grep -q "export PATH=\$PATH:$script_dir" ~/.bashrc; then
-    echo "# Ajouté par le script d'installation" >> ~/.bashrc
+    echo "# Ajout du dossier scrip pour une utilisation plus agreable" >> ~/.bashrc
     echo "export PATH=\$PATH:$script_dir" >> ~/.bashrc
     echo -e "\e[1;32mDossier ajouté au PATH avec succès.\e[0m"
 else
