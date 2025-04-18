@@ -17,6 +17,9 @@ done
 # Corriger les fichiers Python avec autopep8
 autopep8 --in-place --aggressive --aggressive *.py
 
+# Corriger les erreurs avec flake8 en excluant les fichiers 'main.py'
+flake8 --fix --exclude='*main*.py' *.py
+
 # Nettoyer l'écran
 clear
 

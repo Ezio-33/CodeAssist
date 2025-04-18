@@ -3,3 +3,6 @@
 
 # Corriger les fichiers JavaScript avec eslint
 npx eslint . --ext .js --fix
+
+# # Vérifie et ajoute un saut de ligne à la fin des fichiers .js si nécessaire
+#semistandard --fix *.js
