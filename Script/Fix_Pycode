@@ -2,26 +2,35 @@
 
 # Vérifie et ajoute un saut de ligne à la fin des fichiers .py si nécessaire
 for file in *.py; do
-	if [ -f "$file" ]; then
-		# Vérifie si le fichier ne se termine pas par un saut de ligne
-		if [ -s "$file" ] && [ $(tail -c 1 "$file" | wc -l) -eq 0 ]; then
-			echo "Ajout d'un saut de ligne à la fin du fichier $file"
-			echo "" >> "$file"
-		fi
-		
-		# Supprime les espaces blancs en fin de ligne et dans les lignes vides (W293)
-		sed -i 's/[[:space:]]*$//' "$file"
-	fi
+    if [ -f "$file" ]; then
+        # Vérifie si le fichier ne se termine pas par un saut de ligne
+        if [ -s "$file" ] && [ $(tail -c 1 "$file" | wc -l) -eq 0 ]; then
+            echo "Ajout d'un saut de ligne à la fin du fichier $file"
+            echo "" >> "$file"
+        fi
+    fi
 done
 
-# Corriger les fichiers Python avec autopep8
-autopep8 --in-place --aggressive --aggressive *.py
+# Correction automatique avec autopep8 (exclusion des fichiers main)
+for file in *.py; do
+    if [[ "$file" != *"main"* ]]; then
+        autopep8 --in-place --aggressive --aggressive "$file"
+    fi
+done
 
-# Corriger les erreurs avec flake8 en excluant les fichiers 'main.py'
-flake8 --fix --exclude='*main*.py' *.py
+# Vérification avec flake8 (exclusion des fichiers main)
+for file in *.py; do
+    if [[ "$file" != *"main"* ]]; then
+        flake8 "$file"
+    fi
+done
 
 # Nettoyer l'écran
 clear
 
-# Vérifier le style des fichiers Python avec pycodestyle, en excluant les fichiers 'main.py'
-pycodestyle --exclude='*main*.py' *.py
+# Vérification finale avec pycodestyle (exclusion des fichiers main)
+for file in *.py; do
+    if [[ "$file" != *"main"* ]]; then
+        pycodestyle "$file"
+    fi
+done
