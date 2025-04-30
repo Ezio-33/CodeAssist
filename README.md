@@ -1,4 +1,4 @@
-# README pour Script_Prod
+# README pour CodeAssist
 
 ## Description
 
