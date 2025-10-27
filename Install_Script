@@ -74,10 +74,11 @@ fi
 # Chemins des fichiers et dossiers
 script_dir="/root/.Script_Prod"
 github_url=(
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script/git_auto"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script/Preparation_Projet"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script/Fix_js"
-    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/master/Script/Fix_Pycode"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/Script/git_auto"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/Script/Preparation_Projet"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/Script/Fix_js"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/Script/Fix_Pycode"
+    "https://raw.githubusercontent.com/Ezio-33/Script_Prod/main/Script/Merge"
 )
 
 # Création du dossier s'il n'existe pas déjà
@@ -98,6 +99,14 @@ npm -v
 # Installation des outils Python
 echo -e "\e[1;34mInstallation des outils Python...\e[0m"
 run_command "apt install -y python3-pip python3-autopep8 python3-flake8" || exit 1
+
+# Installation de pycodestyle avec pip
+echo -e "\e[1;34mInstallation de pycodestyle...\e[0m"
+run_command "pip3 install pycodestyle" || exit 1
+
+# Installation des outils JavaScript/Node.js
+echo -e "\e[1;34mInstallation des outils JavaScript...\e[0m"
+run_command "npm install -g eslint prettier" || exit 1
 
 # Téléchargement des scripts depuis GitHub
 echo -e "\e[1;34mTéléchargement des scripts depuis GitHub...\e[0m"

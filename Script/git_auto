@@ -11,7 +11,7 @@ check_exit() {
     fi
 }
 
-#Pour le travail a plusieurs Effectuer un git pull avec autostash
+#Pour le travail à plusieurs : effectuer un git pull avec autostash
 git pull --autostash
 
 
@@ -46,9 +46,27 @@ echo "Entrez le commentaire de mise à jour du commit :"
 read -e comment
 check_exit "$comment"
 
-# Effectuer le commit et le push avec le commentaire spécifié
+#Vérifier la présence de changements avant commit
+# Objectif : éviter les commits vides qui génèrent des erreurs Git
+if git diff --cached --quiet; then
+    echo -e "\033[1;33mAucun fichier à valider. Commit annulé.\033[0m"
+    exit 0
+fi
+
+# Effectuer le commit avec le commentaire spécifié
 git commit -m "$comment"
-git push
+
+#Détermination automatique de la branche et gestion du push sécurisé
+#Objectif : éviter l’erreur “no upstream branch” si la branche locale n’est pas suivie
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Vérifie si la branche distante existe
+if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+    git push origin "$branch"
+else
+    echo -e "\033[1;33mCréation de la branche distante '$branch'...\033[0m"
+    git push -u origin "$branch"
+fi
 
 # Mettre le texte en gras et changer la couleur
 tput bold
