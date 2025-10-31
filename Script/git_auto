@@ -49,7 +49,55 @@ check_exit "$comment"
 #Vérifier la présence de changements avant commit
 # Objectif : éviter les commits vides qui génèrent des erreurs Git
 if git diff --cached --quiet; then
-    echo -e "\033[1;33mAucun fichier à valider. Commit annulé.\033[0m"
+    echo -e "\033[1;33mAucun changement à commiter.\033[0m"
+    
+    # Vérifier s'il y a des commits locaux non poussés
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+        commits_ahead=$(git rev-list --count origin/"$branch".."$branch" 2>/dev/null || echo "0")
+        if [ "$commits_ahead" -gt 0 ]; then
+            echo -e "\033[1;33mIl y a $commits_ahead commit(s) local(aux) non poussé(s).\033[0m"
+            echo "Voulez-vous les pousser vers le dépôt distant ? (O/N)"
+            read -e push_choice
+            check_exit "$push_choice"
+            
+            if [ "$push_choice" = "o" ] || [ "$push_choice" = "O" ]; then
+                git push origin "$branch"
+                tput bold
+                tput setaf 2
+                date_du_jour=$(date '+%d-%m-%Y %H:%M:%S')
+                echo "Les commits locaux ont été poussés le $date_du_jour sur ton GIT-HUB"
+                tput sgr0
+            else
+                echo -e "\033[1;33mPush annulé.\033[0m"
+            fi
+        else
+            echo -e "\033[1;32mTout est à jour. Aucune action nécessaire.\033[0m"
+        fi
+    else
+        # La branche distante n'existe pas, vérifier s'il y a des commits locaux
+        commits_count=$(git rev-list --count HEAD 2>/dev/null || echo "0")
+        if [ "$commits_count" -gt 0 ]; then
+            echo -e "\033[1;33mLa branche '$branch' n'existe pas sur le dépôt distant.\033[0m"
+            echo "Voulez-vous créer la branche distante et pousser les commits locaux ? (O/N)"
+            read -e create_choice
+            check_exit "$create_choice"
+            
+            if [ "$create_choice" = "o" ] || [ "$create_choice" = "O" ]; then
+                echo -e "\033[1;33mCréation de la branche distante '$branch'...\033[0m"
+                git push -u origin "$branch"
+                tput bold
+                tput setaf 2
+                date_du_jour=$(date '+%d-%m-%Y %H:%M:%S')
+                echo "La branche '$branch' a été créée et les commits ont été poussés le $date_du_jour sur ton GIT-HUB"
+                tput sgr0
+            else
+                echo -e "\033[1;33mCréation de branche annulée.\033[0m"
+            fi
+        else
+            echo -e "\033[1;33mLa branche '$branch' n'existe pas sur le dépôt distant et aucun commit local à pousser.\033[0m"
+        fi
+    fi
     exit 0
 fi
 
@@ -57,7 +105,7 @@ fi
 git commit -m "$comment"
 
 #Détermination automatique de la branche et gestion du push sécurisé
-#Objectif : éviter l’erreur “no upstream branch” si la branche locale n’est pas suivie
+#Objectif : éviter l'erreur "no upstream branch" si la branche locale n'est pas suivie
 branch=$(git rev-parse --abbrev-ref HEAD)
 
 # Vérifie si la branche distante existe
